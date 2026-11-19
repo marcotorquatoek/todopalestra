@@ -101,17 +101,18 @@ input,select{font-family:inherit;font-size:16px}
 <script>
 const KEY='zaino-palestra-v1';
 const DEFAULT=[
- {id:'s1',name:'Generale',items:['Acqua','Pantaloni serata','T-shirt serata','Cintura','Scarpe da ballo','Phon','Merendina']},
- {id:'s2',name:'Beauty',items:['Profumo','Deodorante','Spazzola','Polvere','Dentifricio','Spazzolino']},
- {id:'s3',name:'Doccia',items:['Accappatoio','Bagnoschiuma','Shampoo','Ciabatte','Tappetino','Mutande','Calze']},
- {id:'s4',name:'Workout addosso',items:['Scarpe da palestra','Asciugamano da palestra','Maglietta','Pantaloncini / Pantaloni lunghi']},
- {id:'s5',name:'Sacchetta blu',items:['Fazzoletti','Cicca','Chiavi ingresso','Lucchetto']}
+ {id:'s1',name:'Generale',items:['Acqua','Merendina']},
+ {id:'s2',name:'Beauty',items:['Profumo','Deodorante','Spazzola','Polvere',['Dentifricio','fixed'],['Spazzolino','fixed']]},
+ {id:'s3',name:'Doccia',items:['Mutande','Calze','Accappatoio',['Bagnoschiuma','fixed'],['Shampoo','fixed'],['Ciabatte','fixed'],['Tappetino','fixed'],['Phon','fixed']]},
+ {id:'s4',name:'Workout',items:[['Scarpe da palestra','quick'],['Asciugamano da palestra','quick'],['Maglietta allenamento','quick'],['Pantaloni allenamento','quick']]},
+ {id:'s5',name:'Sacchetta blu',items:[['Fazzoletti','fixed'],['Cicche','fixed'],['Chiavi ingresso','fixed'],['Lucchetto','fixed'],['Versa Grip','fixed']]},
+ {id:'s6',name:'Post doccia',items:[['T-shirt di ricambio','quick'],['Pantaloni o tuta ricambio','quick'],'Scarpe da ballo','Cintura']}
 ];
 const uid=()=>'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 let state=load(), editing=false;
 function load(){
   try{const r=localStorage.getItem(KEY); if(r){const p=JSON.parse(r); if(Array.isArray(p))return p;}}catch(e){}
-  return DEFAULT.map(s=>({id:s.id,name:s.name,items:s.items.map(l=>({id:uid(),label:l,checked:false}))}));
+  return DEFAULT.map(s=>({id:s.id,name:s.name,items:s.items.map(l=>{const a=Array.isArray(l)?l:[l];const o={id:uid(),label:a[0],checked:false};if(a[1])o.type=a[1];return o})}));
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
